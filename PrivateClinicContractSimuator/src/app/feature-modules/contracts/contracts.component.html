@@ -1,0 +1,34 @@
+<div class="form-container">
+  <form>
+    <h4>Create contract</h4>
+    <!-- ComboBox for selecting company -->
+    <mat-form-field class="example-full-width">
+      <mat-label>Company</mat-label>
+      <mat-select placeholder="Select company">
+        <mat-option *ngFor="let company of companies" [value]="company">{{ company }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- ComboBox for selecting equipment -->
+    <mat-form-field class="example-full-width">
+      <mat-label>Equipment</mat-label>
+      <mat-select placeholder="Select equipment">
+        <mat-option *ngFor="let equipment of equipments" [value]="equipment">{{ equipment }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Input field for entering quantity of equipment -->
+    <mat-form-field class="example-full-width">
+      <input matInput type="number" placeholder="Quantity of equipment" [(ngModel)]="quantity" name="quantity">
+    </mat-form-field>
+
+    <!-- Input field for selecting delivery date -->
+    <mat-form-field class="example-full-width">
+      <input matInput [matDatepicker]="picker" placeholder="Delivery date" [(ngModel)]="deliveryDate" name="deliveryDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </form>
+</div>
