@@ -4,8 +4,8 @@
     <!-- ComboBox for selecting company -->
     <mat-form-field class="example-full-width">
       <mat-label>Company</mat-label>
-      <mat-select placeholder="Select company">
-        <mat-option *ngFor="let company of companies" [value]="company">{{ company }}</mat-option>
+      <mat-select placeholder="Select company" [(value)]="selectedCompany" (selectionChange)="onCompanyChange($event.value)">
+        <mat-option *ngFor="let company of companies" [value]="company">{{ company.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -13,7 +13,7 @@
     <mat-form-field class="example-full-width">
       <mat-label>Equipment</mat-label>
       <mat-select placeholder="Select equipment">
-        <mat-option *ngFor="let equipment of equipments" [value]="equipment">{{ equipment }}</mat-option>
+        <mat-option *ngFor="let equipment of equipments" [value]="equipment">{{ equipment.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
