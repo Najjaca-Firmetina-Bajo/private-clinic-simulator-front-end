@@ -8,8 +8,17 @@ import {User} from "../../infrastructure/auth/model/user.model";
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  user: User | undefined;
+  userId: string | null = "";
 
   constructor(private authService: AuthService) { }
+
+  isUserLoggedIn(): boolean {
+    this.userId = this.authService.getUserId();
+    return !!this.userId;
+  }
+  onLogout(): void {
+    this.authService.logout();
+    this.userId = null;
+  }
 
 }

@@ -26,14 +26,14 @@ export class LoginComponent {
 
   login(): void {
     const login: Login = {
-      username: this.loginForm.value.username || "",
-      password: this.loginForm.value.password || "",
+      email: this.loginForm.get('username')?.value || "",
+      password: this.loginForm.get('password')?.value || "",
     };
 
     if (this.loginForm.valid) {
       this.authService.login(login).subscribe({
         next: () => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/create-contract']);
         },
         error: (errorMessage) => {
           this.openSnackBar(errorMessage);
