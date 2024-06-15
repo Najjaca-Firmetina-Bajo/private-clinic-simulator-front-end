@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ContractsService} from "../contracts.service";
 import {Company} from "./model/company.model";
 import {Equipment} from "./model/equipment.model";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {Contract} from "./model/contract.model";
 import {AuthService} from "../../infrastructure/auth/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -25,7 +25,7 @@ export class ContractsComponent implements OnInit{
       company: [null, Validators.required],
       equipment: [null, Validators.required],
       quantity: [null, [Validators.required, Validators.min(1)]],
-      deliveryDate: [null, Validators.required]
+      deliveryDate: [null, [Validators.required, this.futureDateValidator]]
     });
   }
 
@@ -82,20 +82,24 @@ export class ContractsComponent implements OnInit{
   onCompanyChange(company: Company): void {
     this.contractForm.get('company')?.setValue(company);
     this.equipments = company.equipments;
-    this.contractForm.get('equipment')?.setValue(null); // Reset equipment selection
+    this.contractForm.get('equipment')?.setValue(null);
   }
 
-  futureDateValidator(control: any): {[key: string]: any} | null {
+  futureDateValidator(control: AbstractControl): ValidationErrors | null {
     const selectedDate = new Date(control.value);
     const now = new Date();
+    // Normalize to ignore time portion of the date
+    selectedDate.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
     if (selectedDate < now) {
-      return { 'futureDate': true };
+      return {'futureDate': true};
     }
     return null;
   }
 
   dateFilter = (date: Date | null): boolean => {
     const today = new Date();
-    return date ? date > today : true;
+    today.setHours(0, 0, 0, 0);
+    return date ? date >= today : true;
   }
 }
