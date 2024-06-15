@@ -1,34 +1,40 @@
 <div class="form-container">
-  <form>
+  <form [formGroup]="contractForm" (ngSubmit)="createContract()">
     <h4>Create contract</h4>
     <!-- ComboBox for selecting company -->
     <mat-form-field class="example-full-width">
       <mat-label>Company</mat-label>
-      <mat-select placeholder="Select company" [(value)]="selectedCompany" (selectionChange)="onCompanyChange($event.value)">
+      <mat-select formControlName="company" placeholder="Select company" (selectionChange)="onCompanyChange($event.value)">
         <mat-option *ngFor="let company of companies" [value]="company">{{ company.name }}</mat-option>
       </mat-select>
+      <mat-error *ngIf="contractForm.get('company')?.hasError('required')">Company is required</mat-error>
     </mat-form-field>
 
     <!-- ComboBox for selecting equipment -->
     <mat-form-field class="example-full-width">
       <mat-label>Equipment</mat-label>
-      <mat-select placeholder="Select equipment">
+      <mat-select formControlName="equipment" placeholder="Select equipment">
         <mat-option *ngFor="let equipment of equipments" [value]="equipment">{{ equipment.name }}</mat-option>
       </mat-select>
+      <mat-error *ngIf="contractForm.get('equipment')?.hasError('required')">Equipment is required</mat-error>
     </mat-form-field>
 
     <!-- Input field for entering quantity of equipment -->
     <mat-form-field class="example-full-width">
-      <input matInput type="number" placeholder="Quantity of equipment" [(ngModel)]="quantity" name="quantity">
+      <input matInput type="number" formControlName="quantity" placeholder="Quantity of equipment">
+      <mat-error *ngIf="contractForm.get('quantity')?.hasError('required')">Quantity is required</mat-error>
+      <mat-error *ngIf="contractForm.get('quantity')?.hasError('min')">Quantity must be at least 1</mat-error>
     </mat-form-field>
 
     <!-- Input field for selecting delivery date -->
     <mat-form-field class="example-full-width">
-      <input matInput [matDatepicker]="picker" placeholder="Delivery date" [(ngModel)]="deliveryDate" name="deliveryDate">
+      <input matInput [matDatepicker]="picker" formControlName="deliveryDate" placeholder="Delivery date" [matDatepickerFilter]="dateFilter">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="contractForm.get('deliveryDate')?.hasError('required')">Delivery date is required</mat-error>
+      <mat-error *ngIf="contractForm.get('deliveryDate')?.hasError('futureDate')">Delivery date must be in the future</mat-error>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Save</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="contractForm.invalid">Save</button>
   </form>
 </div>
