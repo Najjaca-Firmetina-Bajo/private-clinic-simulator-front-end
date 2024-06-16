@@ -1,0 +1,8 @@
+<mat-toolbar color="primary">
+  <div>
+    <div id="buttons">
+      <button mat-raised-button *ngIf="isUserLoggedIn()" [routerLink]="['create-contract']">Contract</button>
+      <button  mat-raised-button *ngIf="isUserLoggedIn()" (click)="onLogout()">Logout</button>
+    </div>
+  </div>
+</mat-toolbar>
